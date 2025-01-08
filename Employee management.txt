@@ -23,11 +23,26 @@ class Employee
         salary = salary + salary * percentage / 100;
     }
 }
+class Manager extends Employee{
+    public Manager(String name,int age,float salary){
+        super(name,age,salary,"Manager");
+    }
+}
+class Programmer  extends Employee{
+    public Programmer(String name,int age,float salary){
+        super(name,age,salary,"Programmer");
+    }
+}
+class Clerk extends Employee{
+    public Clerk(String name,int age,float salary){
+        super(name,age,salary,"Clerk");
+    }
+}
 
 public class Main{
     public static void main(String[] args) {
-        Employee employee1 = new Employee("Pavan",22, 25000, "Programmer");
-        Employee employee2 = new Employee("Rohith",22, 70000, "Manager");
+        Employee employee1 = new Programmer("Pavan",22, 25000);
+        Employee employee2 = new Manager("Rohith",22, 70000);
 
         employee1.display();
         employee2.display();
