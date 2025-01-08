@@ -1,0 +1,42 @@
+class Employee
+{
+    private String name;
+    private int age;
+    private float salary;
+    private String designation;
+    
+    public Employee(String name,int age,float salary,String designation){
+        this.name=name;
+        this.age=age;
+        this.salary=salary;
+        this.designation=designation;
+    }
+    
+    public void display(){
+        System.out.println("Name:" +name);
+        System.out.println("Age:" + age);
+        System.out.println("Salary:" + salary);
+        System.out.println("Designation:" + designation);
+        
+    }
+    public void raiseSalary(float percentage) {
+        salary = salary + salary * percentage / 100;
+    }
+}
+
+public class Main{
+    public static void main(String[] args) {
+        Employee employee1 = new Employee("Pavan",22, 25000, "Programmer");
+        Employee employee2 = new Employee("Rohith",22, 70000, "Manager");
+
+        employee1.display();
+        employee2.display();
+
+        employee1.raiseSalary(30);
+        employee2.raiseSalary(12);
+
+        System.out.println("\nAfter raising salary:");
+        employee1.display();
+        employee2.display();
+    }
+}
