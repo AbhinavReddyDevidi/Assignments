@@ -76,7 +76,6 @@ class Clerk extends Emp {
         super(20000, "CLERK");
     }
 
-    @Override
     public void raiseSalary() {
         salary += 2000;
     }
@@ -87,7 +86,6 @@ class Programmer extends Emp {
         super(20000, "Programmer");
     }
 
-    @Override
     public void raiseSalary() {
         salary += 5000;
     }
