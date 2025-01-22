@@ -1,0 +1,67 @@
+import java.util.*;
+
+class Biker implements Runnable {
+    private String name;
+    private int startTime;
+    private int endTime;
+    private int timeTaken;
+
+    public Biker(String name, int startTime)
+    {
+        this.name = name;
+        this.startTime = startTime;
+    }
+    public int getTimeTaken(){
+        return timeTaken;
+    }
+
+    public void run()
+    {
+        try
+        {
+            Thread.sleep(new Random().nextInt(15) + 5 * 1000);
+            endTime = startTime + (new Random().nextInt(15) + 5);
+            timeTaken = endTime - startTime;
+        } 
+        catch (InterruptedException e) 
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public String toString() {
+        return name + " | Start: " + startTime + " | End: " + endTime + " | Time Taken: " + timeTaken;
+    }
+}
+
+public class BikeRacingGame {
+    public static void main(String[] args) throws InterruptedException {
+        Biker bikers[] = new Biker[10];
+        Thread threads[] = new Thread[10];
+        String names[] = {"Biker1", "Biker2", "Biker3", "Biker4", "Biker5", "Biker6", "Biker7", "Biker8", "Biker9", "Biker10"};
+
+        for (int i = 0; i < 10; i++) {
+            bikers[i] = new Biker(names[i], 0);
+            threads[i] = new Thread(bikers[i]);
+        }
+        
+        System.out.println("Countdown:");
+        for (int i = 10; i > 0; i--) {
+            System.out.println(i);
+            Thread.sleep(2000);
+        }
+        System.out.println("GO!\n");
+
+        for (Thread t : threads) t.start();
+        
+        for (Thread t : threads) t.join();
+
+        Arrays.sort(bikers, Comparator.comparingInt(b -> b.getTimeTaken()));
+        System.out.println("\nRankings:");
+        for (int i = 0; i < 10; i++)
+        {
+            System.out.println("Rank " + (i + 1) + ": " + bikers[i]);
+        }
+    
+    }
+}
