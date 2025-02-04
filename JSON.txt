@@ -1,0 +1,112 @@
+import java.sql.*;
+
+public class OrderManagement {
+
+    private static final String URL = "jdbc:postgresql://localhost:5432/postgre";
+    private static final String USER = "postgres"; 
+    private static final String PASSWORD = "tiger";
+    // Method to connect to PostgreSQL database
+    public static Connection connect() {
+        try {
+            // Establish connection to the database
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Insert Order into the table
+    public static void insertOrder(String customer, String product, int qty) {
+        String insertSQL = "INSERT INTO orders (information) VALUES (?::jsonb)";
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
+            
+            // Create JSON object for the information column
+            String json = String.format("{\"customer\": \"%s\", \"items\": {\"product\": \"%s\", \"qty\": %d}}", customer, product, qty);
+            
+            // Set the JSON data
+            stmt.setString(1, json);
+            stmt.executeUpdate();
+            System.out.println("Order inserted successfully!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Update Order in the table
+    public static void updateOrder(int id, String customer, String product, int qty) {
+        String updateSQL = "UPDATE orders SET information = ?::jsonb WHERE id = ?";
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(updateSQL)) {
+            
+            // Create JSON object for the updated information
+            String json = String.format("{\"customer\": \"%s\", \"items\": {\"product\": \"%s\", \"qty\": %d}}", customer, product, qty);
+            
+            // Set the JSON data and id
+            stmt.setString(1, json);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            System.out.println("Order updated successfully!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Delete Order from the table
+    public static void deleteOrder(int id) {
+        String deleteSQL = "DELETE FROM orders WHERE id = ?";
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(deleteSQL)) {
+            
+            // Set the id to be deleted
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            System.out.println("Order deleted successfully!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Display all Orders from the table
+    public static void displayOrders() {
+        String selectSQL = "SELECT * FROM orders";
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(selectSQL)) {
+            
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String information = rs.getString("information");
+                System.out.println("ID: " + id + " | Information: " + information);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        // Insert example
+        insertOrder("Raju Kumar", "coffee", 6);
+
+        // Display all orders
+        System.out.println("\nDisplaying all orders:");
+        displayOrders();
+
+        // Update example
+        System.out.println("\nUpdating order with ID 1:");
+        updateOrder(1, "Raju Kumar", "coffee", 10);
+
+        // Display all orders again to confirm update
+        System.out.println("\nDisplaying all orders after update:");
+        displayOrders();
+
+        // Delete example
+        System.out.println("\nDeleting order with ID 1:");
+        deleteOrder(1);
+
+        // Display all orders again to confirm deletion
+        System.out.println("\nDisplaying all orders after deletion:");
+        displayOrders();
+    }
+}

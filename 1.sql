@@ -1,0 +1,12 @@
+CREATE TABLE EMP (
+    EID int PRIMARY KEY,
+    NAME varchar(15) NOT NULL,
+    AGE int,
+    SALARY decimal(8,2) DEFAULT 15000.00,
+    DESIGNATION varchar(20) NOT NULL
+);
+
+ INSERT INTO EMP (EID, NAME, AGE, DESIGNATION) 
+VALUES (1, 'John Doe', 30, 'Manager');
+
+SELECT * FROM EMP
